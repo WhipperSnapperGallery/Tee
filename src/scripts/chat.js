@@ -64,8 +64,12 @@ window.addEventListener("load", (e) => {
       $("#chat-bar-bottom")[0].scrollIntoView(true);
       response = getBotResponse(currentQuestion, userText);
       currentQuestion = response;
-      if (response) {
+      if (response && response !== "end") {
         botResponse = response.text;
+      }
+      if (response == "end") {
+        botResponse = "Bye!";
+
       }
       let botHtml = '<p class="botText"><span>' + botResponse + "</span></p>";
       $("#chatbox").append(botHtml);
@@ -85,6 +89,15 @@ window.addEventListener("load", (e) => {
         break;
       case QType.NO_ANSWER:
         setTimeout(() => { getResponse(selfCalled = true) }, 2000)
+        break;
+      case "end":
+        textQuestion();
+        $("#send-icon").off("click");
+        $("#textInput").keypress(function (e) {
+          if (e.which == 13) {
+            return false;
+          }
+        });
         break;
       default:
         break;

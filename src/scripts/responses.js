@@ -42,6 +42,7 @@ q13.choices.push(new Response("Not really", q15));
 q14.next = q16;
 q15.next = q16;
 q16.choices.push(new Response("Click me!", q17));
+q17.next = "end";
 
 const getBotResponse = (question=null, userResponse="") => {
     if (question === null) {
@@ -53,6 +54,9 @@ const getBotResponse = (question=null, userResponse="") => {
                 return question.choices[i].nextQuestion;
             }
         }
+    }
+    else if (question.next == "end") {
+        return "end";
     }
     else {
         return question.next;
