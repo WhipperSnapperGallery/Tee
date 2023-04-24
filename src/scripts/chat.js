@@ -75,11 +75,13 @@ window.addEventListener("load", (e) => {
   }
 
   function handleQType(response) {
+    mcCleanUp();
     switch (response.type) {
       case QType.MULTIPLE_CHOICE:
         mcQuestion(response);
         break;
       case QType.TEXT_ANSWER:
+        textQuestion();
         break;
       case QType.NO_ANSWER:
         setTimeout(() => { getResponse(selfCalled = true) }, 2000)
@@ -111,6 +113,22 @@ window.addEventListener("load", (e) => {
         button.removeClass("d-none");
       }
     }
+  }
+
+  function mcCleanUp() {
+    for (i = 0; i < 4; i++) {
+      let button = $(`#btnInput${i}`);
+      if (!button.hasClass("d-none")) {
+        button.addClass("d-none");
+      }
+    }
+  }
+
+  function textQuestion() {
+    $("#buttonInput").addClass("d-none");
+    $("#buttonInput").removeClass("d-flex");
+    $("#userInput").removeClass("d-none");
+    $(".chat-bar-icons").removeClass("d-none");
   }
 
   // Handles sending text via button clicks

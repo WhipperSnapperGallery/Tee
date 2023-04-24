@@ -49,7 +49,6 @@ const getBotResponse = (question=null, userResponse="") => {
     }
     else if (question.next == null && question != null) {
         for (i = 0 ; i < question.choices.length ; i++) {
-            console.log(`${question.choices[i].text} equals ${userResponse}: ${question.choices[i].text == userResponse}`);
             if (question.choices[i].text == userResponse) {
                 return question.choices[i].nextQuestion;
             }
