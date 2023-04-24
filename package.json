@@ -1,0 +1,20 @@
+{
+  "name": "chatbot-test",
+  "version": "1.0.0",
+  "description": "Test chatbot using OpenAI API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "npx webpack --config .webpack/webpack.config.js "
+  },
+  "author": "Omar Musleh",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "openai": "^3.2.1"
+  },
+  "devDependencies": {
+    "webpack": "^5.79.0",
+    "webpack-cli": "^5.0.1"
+  }
+}

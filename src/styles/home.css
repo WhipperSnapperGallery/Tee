@@ -1,0 +1,41 @@
+html {
+    scroll-behavior: smooth;
+    font-family: Helvetica, sans-serif, Arial;
+}
+
+body {
+    margin: 0 auto;
+    background-color: #222;
+}
+
+body, html {
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+canvas {
+    display: block;
+    background-color: white;
+    border: 1px solid black;
+}
+.selected {
+    background-color: lightblue;
+}
+
+#chat-block {
+    position: fixed;
+    z-index: 1;
+    width: 30%;
+    height: 100vh;
+    border: none;
+    background-color: blue;
+  }
+
+  .cnvs-pencil {
+    cursor: url("/assets/icons/pencil-fill.svg") 0 30, pointer;
+  }
+
+  
+  .cnvs-eraser {
+    cursor: url("/assets/icons/eraser-fill.svg") 5 30, pointer;
+  }
