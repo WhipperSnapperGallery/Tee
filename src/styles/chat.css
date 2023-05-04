@@ -1,4 +1,4 @@
-.chat-bar-collapsible {
+/* .chat-bar-collapsible {
     position: fixed;
     bottom: 0;
     right: 50px;
@@ -17,6 +17,41 @@
     border-radius: 10px 10px 0px 0px;
     border: 3px solid white;
     border-bottom: none;
+} */
+
+.custom-modal {
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px solid black;
+    top: 100px;
+    left: 100px;
+    width: 350px;
+    height: 20px;
+    z-index: 1000;
+}
+
+.modal-header {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px;
+    cursor: move;
+    border-radius: 5px 5px 0 0;
+}
+
+.modal-body {
+    padding: 10px;
+    display: block;
+}
+
+.minimize-btn {
+    float: right;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
 }
 
 .content {
@@ -144,6 +179,7 @@
         transform: translateY(14px);
         opacity: .0;
     }
+
     to {
         transform: translateY(0px);
         opacity: 1;
@@ -151,16 +187,17 @@
 }
 
 @media screen and (max-width:600px) {
+    .custom-modal {
+        width: 100%;
+        top: 0%;
+        left: 0;
+    }
+    
     .full-chat-block {
         width: 100%;
         border-radius: 0px;
     }
-    .chat-bar-collapsible {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 100%;
-    }
+
     .collapsible {
         width: 100%;
         border: 0px;

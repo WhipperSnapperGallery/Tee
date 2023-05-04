@@ -4,7 +4,7 @@ html {
 }
 
 body {
-    margin: 0 auto;
+    margin: 0 0 0 0;
     background-color: #222;
 }
 
@@ -16,10 +16,18 @@ body, html {
 canvas {
     display: block;
     background-color: white;
-    border: 1px solid black;
+    /* margin: 0px, -10px, -10px, -10px; */
+    margin-left: -10px;
 }
 .selected {
     background-color: lightblue;
+}
+
+#canvas-buttons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
 }
 
 #chat-block {

@@ -1,17 +1,20 @@
 const { QType, Response } = require("./questions.js");
 const getBotResponse = require("./responses.js").default;
+// import { emojiCursor } from "cursor-effects";
 
 window.addEventListener("load", (e) => {
   // Collapsible
+  // new emojiCursor({ emoji: ["🔥", "🐬", "🦆"] });
+  
   let coll = $(".collapsible");
   let triggered = false;
   let currentQuestion = null;
 
+  new cursoreffects.ghostCursor();
+
   // If there is only one collapsible element (the chatbox) there is no need
   // to iterate over a list
   coll.click(() => {
-    $(this).toggleClass("active");
-
     if (!triggered) {
       setTimeout(firstBotMessage, 1000);
       triggered = true;
@@ -54,6 +57,7 @@ window.addEventListener("load", (e) => {
   // Retrieves the response
   function getResponse(selfCalled = false) {
     let userText = $("#textInput").val();
+    let modal = $("#myModal")[0];
     $("#textInput").val(""); //set the user input to whatever post message before the API call so it appears instantly, mainly for button-based messages
     if (userText || selfCalled) {
       let botResponse = "Sorry, I'm having trouble.";
@@ -72,9 +76,11 @@ window.addEventListener("load", (e) => {
 
       }
       let botHtml = '<p class="botText"><span>' + botResponse + "</span></p>";
-      $("#chatbox").append(botHtml);
-      $("#chat-bar-bottom")[0].scrollIntoView(true);
-      handleQType(response);
+      setTimeout(() => {
+        $("#chatbox").append(botHtml);
+        $("#chat-bar-bottom")[0].scrollIntoView(true);
+        handleQType(response);
+      }, 0);
     }
   }
 
@@ -88,7 +94,7 @@ window.addEventListener("load", (e) => {
         textQuestion();
         break;
       case QType.NO_ANSWER:
-        setTimeout(() => { getResponse(selfCalled = true) }, 2000)
+        setTimeout(() => { getResponse(selfCalled = true) }, 0)
         break;
       case "end":
         textQuestion();
@@ -167,5 +173,5 @@ window.addEventListener("load", (e) => {
   });
   $("#heart-icon").click(heartButton);
 
-  setTimeout(() => { if (!triggered) { coll.click(); } }, 10000);
+  setTimeout(() => { if (!triggered) { coll.click(); } }, 0);
 });

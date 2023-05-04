@@ -1,16 +1,18 @@
 window.addEventListener("load", () => {
+    //Canvas stuff
     const canvas = document.getElementById('drawingCanvas');
     const ctx = canvas.getContext('2d');
     const pencilBtn = document.getElementById('pencil');
     const eraserBtn = document.getElementById('eraser');
     const clearAllBtn = document.getElementById('clearAll');
 
+    let isDragging = false;
     let drawing = false;
     let tool = null;
 
     function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth*0.995;
+        canvas.height = window.innerHeight*0.995;
     }
 
     window.addEventListener('resize', resizeCanvas);
@@ -61,7 +63,7 @@ window.addEventListener("load", () => {
     });
 
     canvas.addEventListener('mousemove', (event) => {
-        if (!drawing || (tool !== 'pencil' && tool !=='eraser')) return;
+        if (!drawing || isDragging ||(tool !== 'pencil' && tool !=='eraser')) return;
         ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
         ctx.stroke();
     });
@@ -80,6 +82,49 @@ window.addEventListener("load", () => {
         }
     });
 
-    // Initialize canvas size and deselect pencil tool
     resizeCanvas();
+
+    //Modal stuff
+    const modal = $("#myModal");
+    const modalHeader = modal.find(".modal-header");
+    const minimizeBtn = $("#minimizeBtn");
+
+    window.addEventListener('resize', () => {
+        modal.css({
+            left: 0 + "px",
+            top: 50 + "%"
+        });
+    });
+    
+    minimizeBtn.on("click", function() {
+      const body = modal.find(".modal-body");
+      if (body.is(":visible")) {
+        body.hide();
+        $(this).text("+");
+      } else {
+        body.show();
+        $(this).text("-");
+      }
+    });
+
+    let mouseOffsetX = 0;
+    let mouseOffsetY = 0;
+
+    modalHeader.on("mousedown", function(e) {
+      isDragging = true;
+      mouseOffsetX = e.clientX - modal.offset().left;
+      mouseOffsetY = e.clientY - modal.offset().top;
+    });
+
+    $(document).on("mousemove", function(e) {
+      if (!isDragging) return;
+      modal.css({
+        left: e.clientX - mouseOffsetX + "px",
+        top: e.clientY - mouseOffsetY + "px"
+      });
+    });
+
+    $(document).on("mouseup", function() {
+      isDragging = false;
+    });
 });
