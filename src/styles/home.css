@@ -4,46 +4,114 @@ html {
 }
 
 body {
+    display: flex;
+    flex-flow: row wrap;
     margin: 0 0 0 0;
     background-color: #222;
 }
 
-body, html {
+body,
+html {
     padding: 0;
     height: 100%;
     width: 100%;
 }
+
 canvas {
     display: block;
     background-color: white;
     /* margin: 0px, -10px, -10px, -10px; */
     margin-left: -10px;
 }
-.selected {
-    background-color: lightblue;
+
+.btn-holder {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 1rem 0 1rem 0;
 }
 
-#canvas-buttons {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-}
-
-#chat-block {
-    position: fixed;
-    z-index: 1;
-    width: 30%;
-    height: 100vh;
-    border: none;
-    background-color: blue;
-  }
-
-  .cnvs-pencil {
+.cnvs-pencil {
     cursor: url("/assets/icons/pencil-fill.svg") 0 30, pointer;
-  }
+}
 
-  
-  .cnvs-eraser {
+
+.cnvs-eraser {
     cursor: url("/assets/icons/eraser-fill.svg") 5 30, pointer;
-  }
+}
+
+.icon-container {
+    display: flex;
+    position: absolute;
+    right: 10px;
+    top: 0;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: max-content;
+    height: 100%;
+}
+
+.icon {
+    width: 5vw;
+    height: 5vw;
+    border-radius: 70rem !important;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.icon-image {
+    font-size: 2vw;
+    width:60%;
+    height: auto;
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 0, 0, 30%, 30%;
+}
+
+@media screen and (max-width: 900px) {
+    canvas {
+        width: 0px;
+        height: 0px;
+        display: none;
+    }
+
+    #canvas-buttons {
+        display: none;
+    }
+
+    .btn-holder {
+        flex-flow: row nowrap;
+        margin: 0 0 0 0;
+        width: 60%;
+        justify-content: space-around;
+    }
+
+    .icon {
+        width: 10vw;
+        height: 10vw;
+        border-radius: 70rem !important;
+        margin: 0.25rem, 0.5 rem, 0.25rem, 0.5rem;
+    }
+
+    .icon-image {
+        font-size: max(3vw, 2vh);
+        width: 95%;
+    }
+
+    .icon-container {
+        left: 0;
+        right:auto;
+        top: 0;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 99vw;
+        height: 14vw;
+    }
+}

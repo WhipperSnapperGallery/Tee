@@ -12,6 +12,7 @@
   "dependencies": {
     "cursor-effects": "^1.0.11",
     "dotenv": "^16.0.3",
+    "html2canvas": "^1.4.1",
     "openai": "^3.2.1"
   },
   "devDependencies": {

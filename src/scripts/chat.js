@@ -1,19 +1,82 @@
-const { QType, Response } = require("./questions.js");
-const getBotResponse = require("./responses.js").default;
+import { QType } from "./questions.js";
+import { getBotResponse } from "./responses.js";
+import { captureScreenshot } from "./clipboard.js";
 // import { emojiCursor } from "cursor-effects";
 
 window.addEventListener("load", (e) => {
   // Collapsible
   // new emojiCursor({ emoji: ["🔥", "🐬", "🦆"] });
-  
+
   let coll = $(".collapsible");
   let triggered = false;
   let currentQuestion = null;
+  let isIconDragging = false;
 
-  new cursoreffects.ghostCursor();
+  // new cursoreffects.ghostCursor();
 
   // If there is only one collapsible element (the chatbox) there is no need
   // to iterate over a list
+
+  //Initialize set of possible link destinations
+  const iframeSources = [{ 'title': 'Google', 'source': "https://www.google.com" },
+  { 'title': 'YouTube', 'source': "https://www.youtube.com" },
+  { 'title': 'Amazon', 'source': "https://www.amazon.ca" }];
+  const gifSources = [{ 'title': 'TEST 1', 'source': "https://giphy.com/embed/R6gvnAxj2ISzJdbA63" },
+  { 'title': 'TEST 2', 'source': "https://giphy.com/embed/3o7aD2vH0w5rMnZ3Bu" }]
+  let modalCount = 0;
+
+  function createModal(type) {
+    if (modalCount > 7) {
+      return;
+    }
+    modalCount++;
+    console.log(`Creating modal ${modalCount}`);
+    const itemChoice = type === 'gif' ? gifSources[Math.floor(Math.random() * gifSources.length)]
+      : iframeSources[Math.floor(Math.random() * iframeSources.length)];
+    const modal = $('<div>', { class: 'custom-modal' }).appendTo('body');
+    const modalHeader = $('<div>', { class: 'cmodal-header' }).appendTo(modal);
+    $('<span>', { text: itemChoice.title }).appendTo(modalHeader);
+    const headerBtns = $('<div>', { class: 'cmodal-btns' }).appendTo(modalHeader);
+    const minimizeBtn = $('<button>', { class: 'minimize-btn', text: '-' }).appendTo(headerBtns);
+    const closeBtn = $('<button>', { id: 'closeBtn', class: 'minimize-btn', text: 'x' }).appendTo(headerBtns);
+    const modalBody = $('<div>', { class: 'modal-body' }).appendTo(modal);
+    $('<iframe>', { src: itemChoice.source }).appendTo(modalBody);
+
+
+    minimizeBtn.on("click", function () {
+      modalBody.toggle();
+      $(this).text(modalBody.is(":visible") ? '-' : '+');
+    });
+
+    closeBtn.on("click", function (e) {
+      const target = $(e.target);
+      target.parent().parent().parent().remove();
+      modalCount--;
+    });
+
+    let mouseOffsetX = 0;
+    let mouseOffsetY = 0;
+    let isDragging = false;
+
+    modalHeader.on("mousedown", function (e) {
+      isDragging = true;
+      mouseOffsetX = e.clientX - modal.offset().left;
+      mouseOffsetY = e.clientY - modal.offset().top;
+    });
+
+    $(document).on("mousemove", function (e) {
+      if (!isDragging) return;
+      modal.css({
+        left: e.clientX - mouseOffsetX + "px",
+        top: e.clientY - mouseOffsetY + "px"
+      });
+    });
+
+    $(document).on("mouseup", function () {
+      isDragging = false;
+    });
+  }
+
   coll.click(() => {
     if (!triggered) {
       setTimeout(firstBotMessage, 1000);
@@ -30,8 +93,8 @@ window.addEventListener("load", (e) => {
 
   function getTime() {
     let today = new Date();
-    hours = (today.getHours() % 13) + 1; //display it in 12-hour time
-    minutes = today.getMinutes();
+    let hours = (today.getHours() % 13) + 1; //display it in 12-hour time
+    let minutes = today.getMinutes();
 
     if (minutes < 10) {
       minutes = "0" + minutes;
@@ -56,8 +119,10 @@ window.addEventListener("load", (e) => {
 
   // Retrieves the response
   function getResponse(selfCalled = false) {
+    if (document.getElementById("chat-ball") && !document.getElementById("chat-ball").onclick) {
+      $('#chat-ball').on('click', () => { createModal('iframe') });
+    }
     let userText = $("#textInput").val();
-    let modal = $("#myModal")[0];
     $("#textInput").val(""); //set the user input to whatever post message before the API call so it appears instantly, mainly for button-based messages
     if (userText || selfCalled) {
       let botResponse = "Sorry, I'm having trouble.";
@@ -66,20 +131,24 @@ window.addEventListener("load", (e) => {
         $("#chatbox").append(userHtml);
       }
       $("#chat-bar-bottom")[0].scrollIntoView(true);
-      response = getBotResponse(currentQuestion, userText);
+      let response = getBotResponse(currentQuestion, userText);
       currentQuestion = response;
       if (response && response !== "end") {
         botResponse = response.text;
       }
       if (response == "end") {
         botResponse = "Bye!";
+        createModal('iframe');
 
       }
+
       let botHtml = '<p class="botText"><span>' + botResponse + "</span></p>";
       setTimeout(() => {
         $("#chatbox").append(botHtml);
         $("#chat-bar-bottom")[0].scrollIntoView(true);
+        let cont = $(".full-chat-block")
         handleQType(response);
+        cont.scrollTop(cont.scrollTop() + 1000);
       }, 0);
     }
   }
@@ -94,7 +163,7 @@ window.addEventListener("load", (e) => {
         textQuestion();
         break;
       case QType.NO_ANSWER:
-        setTimeout(() => { getResponse(selfCalled = true) }, 0)
+        setTimeout(() => { getResponse(true) }, 0)
         break;
       case "end":
         textQuestion();
@@ -117,7 +186,7 @@ window.addEventListener("load", (e) => {
       $("#buttonInput").removeClass("d-none");
       $("#buttonInput").addClass("d-flex");
       let answers = response.choices;
-      for (i = 0; i < answers.length; i++) {
+      for (let i = 0; i < answers.length; i++) {
         let answer = answers[i].text;
         let button = $(`#btnInput${i}`);
         button.off("click");
@@ -135,7 +204,7 @@ window.addEventListener("load", (e) => {
   }
 
   function mcCleanUp() {
-    for (i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i++) {
       let button = $(`#btnInput${i}`);
       if (!button.hasClass("d-none")) {
         button.addClass("d-none");
@@ -174,4 +243,48 @@ window.addEventListener("load", (e) => {
   $("#heart-icon").click(heartButton);
 
   setTimeout(() => { if (!triggered) { coll.click(); } }, 0);
+
+  function setupMainButtons() {
+    const copyBtn = $("#copyBtn");
+    copyBtn.on("click", captureScreenshot);
+    const modalWand = $("#modalWand");
+    modalWand.on("click", () => { createModal('iframe') });
+    const gifDuck = $("#gifDuck");
+    gifDuck.on("click", () => { createModal('gif') });
+
+    let buttons = [copyBtn, modalWand, gifDuck];
+
+    let mouseOffsetX = 0;
+    let mouseOffsetY = 0;
+    let isIconDragging = false;
+    let buttonTarget = null;
+
+    for (let button of buttons) {
+      button.on("mousedown", function (e) {
+        console.log("drag started");
+        buttonTarget = $(e.target);
+        console.log(JSON.stringify(buttonTarget));
+        isIconDragging = true;
+        mouseOffsetX = e.clientX - buttonTarget.offset().left;
+        mouseOffsetY = e.clientY - buttonTarget.offset().top;
+      });
+    }
+
+    $(document).on("mousemove", function (e) {
+      if (!isIconDragging) return;
+      console.log("dragging");
+      buttonTarget.css({
+        left: e.clientX - mouseOffsetX + "px",
+        top: e.clientY - mouseOffsetY + "px"
+      });
+    });
+
+    $(document).on("mouseup", function () {
+      isIconDragging = false;
+      console.log("drag ended");
+      buttonTarget = null;
+    });
+  }
+
+  setupMainButtons();
 });
