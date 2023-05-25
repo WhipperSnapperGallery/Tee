@@ -13,4 +13,6 @@ export function buildCsvString() {
 
     console.log(headerString);
     console.log(bodyString);
+
+    return headerString + "\n" + bodyString;
 };

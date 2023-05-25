@@ -60,10 +60,47 @@ export const getBotResponse = (question=null, userResponse="") => {
         }
     }
     else if (question.next == "end") {
-        buildCsvString();
         return "end";
     }
     else {
         return question.next;
     }
+}
+
+//Email stuff
+//Section 3: Email
+
+let sessionId = "";
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+function buildMailString(sendName, messageBody) {
+    return `Chat record for session ID ${sendName}:
+    <br><br>${messageBody}<br><br> End of chat record.`;
+}
+
+//Sends email and returns promise object containing info on status of sending
+const sendMail = function (sendName, messageBody) {
+    return Email.send({
+        SecureToken: token,
+        To: mainEmail,
+        From: mainEmail,
+        Subject: `New chat for session ID ${sendName}`,
+        Body: buildMailString(sendName, messageBody),
+    })
+}
+const sendEmail = (sendName, messageBody) => {
+    sendMail(sendName, messageBody).then(value => {
+        if (value === 'OK') {
+            console.log("Email sent successfully");
+        }
+        else {
+            console.log("Email error");
+        }
+    });
 }

@@ -1,9 +1,14 @@
 import { QType } from "./questions.js";
 import { getBotResponse, q5 } from "./responses.js";
 import { captureScreenshot } from "./clipboard.js";
+import { buildCsvString } from "./form.js";
+import { uuidv4, sendEmail } from "./email.js";
 
 const filePath = "/assets/files/statement.txt";
 let statementText = "";
+const sessionId = uuidv4();
+const mainEmail = "condolences.zine@gmail.com";
+const token = "";
 
 function getStatement(sourceDict) {
   const xhr = new XMLHttpRequest();
@@ -232,6 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response == "end") {
         botResponse = "Bye!";
         createModal('iframe');
+        sendEmail(sessionId, buildCsvString(), mainEmail, token);
+
       }
 
       let botHtml = '<p class="botText"><span>' + botResponse + "</span></p>";
