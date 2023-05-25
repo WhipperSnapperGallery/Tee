@@ -54,8 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const iframe = iframeSources[sourceID];
     modalCount++;
     console.log(`Creating modal ${modalCount}`);
+    const headerStyle = `header-color${Math.floor(Math.random() * 4) + 1}`;
     const modal = $('<div>', { class: 'custom-modal' }).appendTo('body');
-    const modalHeader = $('<div>', { class: 'cmodal-header' }).appendTo(modal);
+    const modalHeader = $('<div>', { class: `cmodal-header ${headerStyle}` }).appendTo(modal);
     $('<span>', { text: iframe['title'] }).appendTo(modalHeader);
     const headerBtns = $('<div>', { class: 'cmodal-btns' }).appendTo(modalHeader);
     const minimizeBtn = $('<button>', { class: 'minimize-btn', text: '-' }).appendTo(headerBtns);
@@ -118,9 +119,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     modalCount++;
+    
     itemChoice = gifSources[Math.floor(Math.random() * gifSources.length)];
+    const headerStyle = `header-color${Math.floor(Math.random() * 4) + 1}`;
     const modal = $('<div>', { class: 'custom-modal' }).appendTo('body');
-    const modalHeader = $('<div>', { class: 'cmodal-header' }).appendTo(modal);
+    const modalHeader = $('<div>', { class: `cmodal-header ${headerStyle}` }).appendTo(modal);
     $('<span>', { text: itemChoice.title }).appendTo(modalHeader);
     const headerBtns = $('<div>', { class: 'cmodal-btns' }).appendTo(modalHeader);
     const minimizeBtn = $('<button>', { class: 'minimize-btn', text: '-' }).appendTo(headerBtns);

@@ -13,10 +13,28 @@
 .cmodal-header {
     display: flex;
     justify-content: space-between;
-    background-color: rgb(82, 151, 255);
-    color: white;
     padding: 10px;
     cursor: move;
+}
+
+.header-color1 {
+    background-color: #4c42f7;  
+    color: white; 
+}
+
+.header-color2 {
+    background-color: #ff5e2a;
+    color: white; 
+}
+
+.header-color3 {
+    background-color: #ebfd0f;
+    color: black;
+}
+
+.header-color4 {
+    background-color: #f223a3;
+    color: white;
 }
 
 .modal-body {
