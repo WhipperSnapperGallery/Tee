@@ -1,38 +1,124 @@
 import { QType } from "./questions.js";
-import { getBotResponse } from "./responses.js";
+import { getBotResponse, q5 } from "./responses.js";
 import { captureScreenshot } from "./clipboard.js";
-// import { emojiCursor } from "cursor-effects";
 
-window.addEventListener("load", (e) => {
-  // Collapsible
-  // new emojiCursor({ emoji: ["🔥", "🐬", "🦆"] });
+const filePath = "/assets/files/statement.txt";
+let statementText = "";
 
+function getStatement(sourceDict) {
+  const xhr = new XMLHttpRequest();
+  xhr.onload = () => {
+    statementText = xhr.responseText;
+    sourceDict["Artist Statement"]['source'] = `<span class="fs-6 text-light">${statementText}</span>`;
+  };
+  xhr.open('GET', filePath, true);
+  xhr.responseType = 'text';
+  xhr.send();
+}
+
+document.addEventListener("DOMContentLoaded", () => {
   let coll = $(".collapsible");
   let triggered = false;
   let currentQuestion = null;
-  let isIconDragging = false;
-
-  // new cursoreffects.ghostCursor();
-
-  // If there is only one collapsible element (the chatbox) there is no need
-  // to iterate over a list
 
   //Initialize set of possible link destinations
-  const iframeSources = [{ 'title': 'Google', 'source': "https://www.google.com" },
-  { 'title': 'YouTube', 'source': "https://www.youtube.com" },
-  { 'title': 'Amazon', 'source': "https://www.amazon.ca" }];
-  const gifSources = [{ 'title': 'TEST 1', 'source': "https://giphy.com/embed/R6gvnAxj2ISzJdbA63" },
-  { 'title': 'TEST 2', 'source': "https://giphy.com/embed/3o7aD2vH0w5rMnZ3Bu" }]
+  let iframeSources = {
+    "Zine": { 'title': 'Object Permanancy Zine', 'source': '<iframe height="167" frameborder="0" src="https://itch.io/embed/2045348" width="552"><a href="https://bubbletrex.itch.io/object-permanancy-zine-badly-drawn-swamp-dream" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;">Object Permanancy Zine: Badly Drawn Swamp Dream by bubbletrex</a></iframe>' },
+    "Stretches": { 'title': 'Stretch', 'source': '<iframe src="https://www.youtube-nocookie.com/embed/4pKly2JojMw?modestbranding=1&rel=0&iv_load_policy=3&disablekb=1&fs=0" width="800" height="450" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;" frameborder="0"></iframe>' },
+    "Artist Statement": { 'title': 'Statement', 'source': "" },
+    "Game": {'title': 'Flower Feast', 'source': '<iframe src="https://flowerfeast-tee.glitch.me/" frameborder=0></iframe>'},
+    "Credits": {'title': 'Credits', 'source': ''},
+  };
+
+  const gifSources = [
+    { 'title': 'TEST 1', 'source': "https://giphy.com/embed/R6gvnAxj2ISzJdbA63" },
+    { 'title': 'TEST 2', 'source': "https://giphy.com/embed/3o7aD2vH0w5rMnZ3Bu" }
+  ]
+
+  getStatement(iframeSources);
+
+  function getGame() {
+    window.open("https://flowerfeast-tee.glitch.me/", "_blank");
+  }
+
   let modalCount = 0;
+
+  function createSpecificModal(sourceID) {
+    if (modalCount > 7) {
+      return;
+    }
+    if (sourceID === "Game") {
+      getGame();
+      return;
+    }
+    const iframe = iframeSources[sourceID];
+    modalCount++;
+    console.log(`Creating modal ${modalCount}`);
+    const modal = $('<div>', { class: 'custom-modal' }).appendTo('body');
+    const modalHeader = $('<div>', { class: 'cmodal-header' }).appendTo(modal);
+    $('<span>', { text: iframe['title'] }).appendTo(modalHeader);
+    const headerBtns = $('<div>', { class: 'cmodal-btns' }).appendTo(modalHeader);
+    const minimizeBtn = $('<button>', { class: 'minimize-btn', text: '-' }).appendTo(headerBtns);
+    const closeBtn = $('<button>', { id: 'closeBtn', class: 'minimize-btn', text: 'x' }).appendTo(headerBtns);
+    const modalBody = $('<div>', { class: 'modal-body' }).appendTo(modal);
+    modalBody.html(iframe['source']);
+
+    minimizeBtn.on("click", function () {
+      modalBody.toggle();
+      $(this).text(modalBody.is(":visible") ? '-' : '+');
+    });
+
+    closeBtn.on("click", function (e) {
+      const target = $(e.target);
+      target.parent().parent().parent().remove();
+      modalCount--;
+    });
+
+    let mouseOffsetX = 0;
+    let mouseOffsetY = 0;
+    let isDragging = false;
+
+    modalHeader.on("mousedown", function (e) {
+      isDragging = true;
+      mouseOffsetX = e.clientX - modal.offset().left;
+      mouseOffsetY = e.clientY - modal.offset().top;
+    });
+
+    $(document).on("mousemove", function (e) {
+      if (!isDragging) return;
+      modal.css({
+        left: e.clientX - mouseOffsetX + "px",
+        top: e.clientY - mouseOffsetY + "px"
+      });
+    });
+
+    $(document).on("mouseup", function () {
+      isDragging = false;
+    });
+  }
 
   function createModal(type) {
     if (modalCount > 7) {
       return;
     }
-    modalCount++;
+    if (type !== 'gif' && type !== 'iframe') {
+      return;
+    }
+
     console.log(`Creating modal ${modalCount}`);
-    const itemChoice = type === 'gif' ? gifSources[Math.floor(Math.random() * gifSources.length)]
-      : iframeSources[Math.floor(Math.random() * iframeSources.length)];
+    let itemChoice;
+    
+    if (type === 'iframe') {
+      let keys = Array.from(Object.keys(iframeSources));
+      console.log(keys);
+      itemChoice = keys[Math.floor(Math.random() * keys.length)];
+      console.log(itemChoice);
+      createSpecificModal(itemChoice);
+      return;
+    }
+
+    modalCount++;
+    itemChoice = gifSources[Math.floor(Math.random() * gifSources.length)];
     const modal = $('<div>', { class: 'custom-modal' }).appendTo('body');
     const modalHeader = $('<div>', { class: 'cmodal-header' }).appendTo(modal);
     $('<span>', { text: itemChoice.title }).appendTo(modalHeader);
@@ -41,7 +127,6 @@ window.addEventListener("load", (e) => {
     const closeBtn = $('<button>', { id: 'closeBtn', class: 'minimize-btn', text: 'x' }).appendTo(headerBtns);
     const modalBody = $('<div>', { class: 'modal-body' }).appendTo(modal);
     $('<iframe>', { src: itemChoice.source }).appendTo(modalBody);
-
 
     minimizeBtn.on("click", function () {
       modalBody.toggle();
@@ -123,7 +208,7 @@ window.addEventListener("load", (e) => {
       $('#chat-ball').on('click', () => { createModal('iframe') });
     }
     let userText = $("#textInput").val();
-    $("#textInput").val(""); //set the user input to whatever post message before the API call so it appears instantly, mainly for button-based messages
+    $("#textInput").val(""); //set the user input to whatever post message before the call so it appears instantly, mainly for button-based messages
     if (userText || selfCalled) {
       let botResponse = "Sorry, I'm having trouble.";
       let userHtml = '<p class="userText"><span>' + userText + "</span></p>";
@@ -136,10 +221,14 @@ window.addEventListener("load", (e) => {
       if (response && response !== "end") {
         botResponse = response.text;
       }
+
+      if (response == q5) {
+        createSpecificModal("Stretches");
+      }
+
       if (response == "end") {
         botResponse = "Bye!";
         createModal('iframe');
-
       }
 
       let botHtml = '<p class="botText"><span>' + botResponse + "</span></p>";
@@ -149,7 +238,7 @@ window.addEventListener("load", (e) => {
         let cont = $(".full-chat-block")
         handleQType(response);
         cont.scrollTop(cont.scrollTop() + 1000);
-      }, 0);
+      }, 1200);
     }
   }
 
@@ -163,7 +252,7 @@ window.addEventListener("load", (e) => {
         textQuestion();
         break;
       case QType.NO_ANSWER:
-        setTimeout(() => { getResponse(true) }, 0)
+        setTimeout(() => { getResponse(true) }, 1200)
         break;
       case "end":
         textQuestion();
@@ -242,48 +331,16 @@ window.addEventListener("load", (e) => {
   });
   $("#heart-icon").click(heartButton);
 
-  setTimeout(() => { if (!triggered) { coll.click(); } }, 0);
+  setTimeout(() => { if (!triggered) { coll.click(); } }, 10000);
 
   function setupMainButtons() {
-    const copyBtn = $("#copyBtn");
-    copyBtn.on("click", captureScreenshot);
-    const modalWand = $("#modalWand");
-    modalWand.on("click", () => { createModal('iframe') });
-    const gifDuck = $("#gifDuck");
-    gifDuck.on("click", () => { createModal('gif') });
-
-    let buttons = [copyBtn, modalWand, gifDuck];
-
-    let mouseOffsetX = 0;
-    let mouseOffsetY = 0;
-    let isIconDragging = false;
-    let buttonTarget = null;
-
-    for (let button of buttons) {
-      button.on("mousedown", function (e) {
-        console.log("drag started");
-        buttonTarget = $(e.target);
-        console.log(JSON.stringify(buttonTarget));
-        isIconDragging = true;
-        mouseOffsetX = e.clientX - buttonTarget.offset().left;
-        mouseOffsetY = e.clientY - buttonTarget.offset().top;
-      });
-    }
-
-    $(document).on("mousemove", function (e) {
-      if (!isIconDragging) return;
-      console.log("dragging");
-      buttonTarget.css({
-        left: e.clientX - mouseOffsetX + "px",
-        top: e.clientY - mouseOffsetY + "px"
-      });
-    });
-
-    $(document).on("mouseup", function () {
-      isIconDragging = false;
-      console.log("drag ended");
-      buttonTarget = null;
-    });
+    $("#cpyBtn").on("click", captureScreenshot);
+    $("#modalWand").on("click", () => { createModal('iframe') });
+    $("#gifDuck").on("click", () => { createModal('gif') });
+    $("#gameBtn").on("click", getGame);
+    $("#zineBtn").on("click", () => { createSpecificModal('Zine') });
+    $("#statementBtn").on("click", () => { createSpecificModal('Artist Statement') });
+    $("#creditsBtn").on("click", () => { createSpecificModal('Credits') });
   }
 
   setupMainButtons();

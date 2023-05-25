@@ -17,27 +17,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="../dist/bundle.js"></script>
     <script src="/src/scripts/canvas.js"></script>
-    <script src="/src/scripts/index.js"></script>
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="icon-container">
-            <div id="canvas-buttons" class="btn-holder">
-                <button id="pencil" class="btn btn-outline-primary icon"><i
+            <div id="canvas-buttons" class="btn-holder-h">
+                <button id="pencil" class="btn btn-outline-light icon"><i
                         class="fa-sharp fa-solid fa-pen icon-image"></i></button>
-                <button id="eraser" class="btn btn-outline-primary icon"><i class="fa-sharp fa-solid fa-eraser icon-image"></i></button>
-                <button id="clearAll" class="btn btn-outline-danger icon"><i class="fa-solid fa-trash icon-image"></i></button>
+                <button id="eraser" class="btn icon"><i class="fa-sharp fa-solid fa-eraser icon-image"></i></button>
+                <button id="cpyBtn" class="btn icon"><i class="fa-solid fa-clipboard icon-image"></i></i></button>
+                <button id="clearAll" class="btn icon"><i class="fa-solid fa-trash icon-image"></i></button>
             </div>
-            <div id="permanent-buttons" class="btn-holder">
-                <button id="gifDuck" class="btn btn-outline-success icon"><i class="fa-solid fa-kiwi-bird icon-image"></i></button>
-                <button id="modalWand" class="btn btn-outline-warning icon"><i class="fa-solid fa-wand-magic-sparkles icon-image"></i></button>
-                <button id="cpyBtn" class="btn btn-outline-dark icon"><i class="fa-regular fa-clipboard icon-image"></i></button>
+            <div id="permanent-buttons" class="btn-holder-v">
+                <button id="gifDuck" class="btn icon"><i class="fa-solid fa-mobile-retro icon-image"></i></i></button>
+                <button id="zineBtn" class="btn icon"><i class="fa-solid fa-hand-sparkles icon-image"></i></i></button>
+                <button id="gameBtn" class="btn icon"><i class="fa-solid fa-gamepad icon-image"></i></button>
+                <button id="creditsBtn" class="btn icon"><i class="fa-solid fa-seedling icon-image"></i></button>
+                <button id="statementBtn" class="btn icon"><i class="fa-solid fa-horse-head icon-image"></i></button>
+                <button id="modalWand" class="btn icon"><i class="fa-solid fa-heart icon-image"></i></i></button>
             </div>
         </div>
         <div class="chat-bar-collapsible">
-            <button id="chat-button" type="button" class="collapsible active">A Friend
-                <i id="chat-icon" class="fa-solid fa-user "></i>
+            <button id="chat-button" type="button" class="collapsible active">
+                <i id="chat-icon" class="fa-solid fa-circle " style="color:rgb(95, 187, 2); font-size: x-small;"></i>
+                chatchatchat
             </button>
             <div class="content">
                 <div class="full-chat-block">
@@ -79,7 +83,6 @@
                 </div>
             </div>
         </div>
-        <!-- </div> -->
         <canvas id="drawingCanvas"></canvas>
     </div>
 </body>

@@ -1,4 +1,3 @@
-//import { Configuration, OpenAIApi } from "openai";
 import { QType, Question, Response } from "./questions";
 import { buildCsvString } from "./form";
 
@@ -7,8 +6,8 @@ const q1 = new Question("Gosh, everything feels so messed up lately. Like my bac
 const q2 = new Question("How've you been feeling lately?", QType.TEXT_ANSWER, []);
 const q3 = new Question("For sure", QType.NO_ANSWER, []);
 const q4 = new Question("Actually, do you want to do some stretches together?", QType.MULTIPLE_CHOICE, []);
-const q5 = new Question("Cool!! Let's try this one?", QType.NO_ANSWER, []);
-const q5a = new Question("<a href='https://www.youtube.com/watch?v=4pKly2JojMw' target='_blank' rel='noreferrer noopener'>https://www.youtube.com/watch?v=4pKly2JojMw</a>", QType.NO_ANSWER, []);
+export const q5 = new Question("Cool!! Let's try this one?", QType.NO_ANSWER, []);
+// const q5a = new Question("<a href='https://www.youtube.com/watch?v=4pKly2JojMw' target='_blank' rel='noreferrer noopener'>https://www.youtube.com/watch?v=4pKly2JojMw</a>", QType.NO_ANSWER, []);
 const q5b = new Question("Let me know when you're done.", QType.MULTIPLE_CHOICE, []);
 const q6 = new Question("Haha, I feel so good. How does your body feel?", QType.MULTIPLE_CHOICE, []);
 const q7 = new Question("Oh OK, no worries then.", QType.NO_ANSWER, []);
@@ -29,8 +28,8 @@ q2.next = q3;
 q3.next = q4;
 q4.choices.push(new Response("Ya, let's do it!", q5)); //do this for MULTIPLE_CHOICE questions which may have branching subsequent questions
 q4.choices.push(new Response("No, it's cool.", q7));
-q5.next = q5a;
-q5a.next = q5b;
+q5.next = q5b;
+// q5a.next = q5b;
 q5b.choices.push(new Response("I'm done.", q6));
 q6.choices.push(new Response("I feel great!", q8));
 q6.choices.push(new Response("The same.", q7));
@@ -46,7 +45,7 @@ q13.choices.push(new Response("I getchu", q14));
 q13.choices.push(new Response("Not really", q15));
 q14.next = q16;
 q15.next = q16;
-q16.choices.push(new Response(`<button id='chat-ball' class="border-0 bg-transparent"><i class="fa-solid fa-wand-magic-sparkles"></i></button>`, q17));
+q16.choices.push(new Response(`<button id='chat-ball' class="border-0 bg-transparent"><i class="fa-solid fa-gift"></i></i></button>`, q17));
 q17.next = "end";
 
 export const getBotResponse = (question=null, userResponse="") => {
@@ -68,20 +67,3 @@ export const getBotResponse = (question=null, userResponse="") => {
         return question.next;
     }
 }
-
-// const configuration = new Configuration({
-//     apiKey: process.env.OPENAI_API_KEY,
-// });
-// const openai = new OpenAIApi(configuration);
-
-// const getBotResponse = async (prompt) => {
-//     if (DEBUG) {
-//         return;
-//     }
-//     return await openai.createCompletion({
-//         model: "text-davinci-003",
-//         prompt: prompt,
-//         max_tokens: 100,
-//         temperature: 0.25,
-//     })
-// };

@@ -1,4 +1,4 @@
-window.addEventListener("load", () => {
+document.addEventListener("DOMContentLoaded", () => {
     //Modal stuff
     //Initialize set of possible link destinations
     const iframeSources = ["https://www.google.com", "https://www.youtube.com", "https://www.amazon.ca"];
@@ -80,19 +80,16 @@ window.addEventListener("load", () => {
     function selectPencil() {
         if (tool === 'pencil') {
             tool = null;
-            pencilBtn.classList.remove('btn-primary');
-            pencilBtn.classList.add('btn-outline-primary');
+            pencilBtn.classList.remove('active');
             canvas.classList.remove('cnvs-pencil');
         } else {
             tool = 'pencil';
-            pencilBtn.classList.add('btn-primary');
-            pencilBtn.classList.remove('btn-outline-primary');
-            eraserBtn.classList.remove('btn-primary');
-            eraserBtn.classList.add('btn-outline-primary');
+            pencilBtn.classList.add('active');
+            eraserBtn.classList.remove('active');
             canvas.classList.remove('cnvs-eraser');
             canvas.classList.add('cnvs-pencil')
-            ctx.strokeStyle = 'black';
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = '#14034e';
+            ctx.lineWidth = 3;
         }
     }
 
@@ -101,20 +98,17 @@ window.addEventListener("load", () => {
     eraserBtn.addEventListener('click', () => {
         if (tool == 'eraser') {
             tool = null;
-            eraserBtn.classList.remove('btn-primary');
-            eraserBtn.classList.add('btn-outline-primary');
+            eraserBtn.classList.remove('active');
             canvas.classList.remove('cnvs-eraser');
         }
         else if (tool !== 'eraser') {
             tool = 'eraser';
             console.log(tool)
-            eraserBtn.classList.add('btn-primary');
-            eraserBtn.classList.remove('btn-outline-primary');
-            pencilBtn.classList.remove('btn-primary');
-            pencilBtn.classList.add('btn-outline-primary');
+            eraserBtn.classList.add('active');
+            pencilBtn.classList.remove('active');
             canvas.classList.remove('cnvs-pencil');
             canvas.classList.add('cnvs-eraser');
-            ctx.strokeStyle = 'white';
+            ctx.strokeStyle = 'white';              
             ctx.lineWidth = 15;
         }
     });

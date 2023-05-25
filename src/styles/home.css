@@ -7,7 +7,7 @@ body {
     display: flex;
     flex-flow: row wrap;
     margin: 0 0 0 0;
-    background-color: #222;
+    
 }
 
 body,
@@ -19,17 +19,37 @@ html {
 
 canvas {
     display: block;
-    background-color: white;
     /* margin: 0px, -10px, -10px, -10px; */
     margin-left: -10px;
 }
 
-.btn-holder {
+.container-fluid {
+    background: url("../../assets/img/background.PNG") no-repeat center center !important;
+}
+
+.btn-holder-h {
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    margin: 1rem 0 1rem 0;
+}
+
+.btn-holder-v {
+    display: flex;
+    position: absolute;
+    bottom:0;
+    right:10px;
+    flex-flow: column-reverse wrap;
+    max-height: 35vh;
+    width: 15vw;
     justify-content: space-evenly;
     align-items: center;
     margin: 1rem 0 1rem 0;
+
 }
 
 .cnvs-pencil {
@@ -41,7 +61,7 @@ canvas {
     cursor: url("/assets/icons/eraser-fill.svg") 5 30, pointer;
 }
 
-.icon-container {
+/* .icon-container {
     display: flex;
     position: absolute;
     right: 10px;
@@ -51,14 +71,26 @@ canvas {
     align-items: flex-end;
     width: max-content;
     height: 100%;
-}
+} */
 
 .icon {
+    color: #32d180 !important;
     width: 5vw;
     height: 5vw;
     border-radius: 70rem !important;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
+    border: none !important;
+}
+
+.icon.active {
+    background-color: #32d180 !important;
+    color: white !important;
+}
+
+.icon:hover {
+    background-color: #32d180 !important;
+    color: white !important;
 }
 
 .icon-image {
@@ -85,10 +117,12 @@ iframe {
         display: none;
     }
 
-    .btn-holder {
-        flex-flow: row nowrap;
+    .btn-holder-v {
+        flex-flow: row wrap;
+        top: 0;
+        left:auto;
         margin: 0 0 0 0;
-        width: 60%;
+        width: 100%;
         justify-content: space-around;
     }
 
