@@ -25,6 +25,7 @@ canvas {
 
 .container-fluid {
     background: url("../../assets/img/background.PNG") no-repeat center center !important;
+    background-size: cover !important;
 }
 
 .btn-holder-h {
@@ -74,27 +75,26 @@ canvas {
 } */
 
 .icon {
-    color: #32d180 !important;
+    color: black !important;
     width: 5vw;
     height: 5vw;
     border-radius: 70rem !important;
     margin-top: 0.25rem;
     margin-bottom: 0.25rem;
+    text-align: center;
     border: none !important;
 }
 
 .icon.active {
-    background-color: #32d180 !important;
     color: white !important;
 }
 
 .icon:hover {
-    background-color: #32d180 !important;
     color: white !important;
 }
 
 .icon-image {
-    font-size: 2vw;
+    font-size: 3vw;
     width:60%;
     height: auto;
 }
