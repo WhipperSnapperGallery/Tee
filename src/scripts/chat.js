@@ -1,5 +1,5 @@
 import { QType } from "./questions.js";
-import { getBotResponse, q5 } from "./responses.js";
+import { getBotResponse, q5 } from "./responses.js"; //import modifier questions here, {getBotResponse, q5, qxy}
 import { captureScreenshot } from "./clipboard.js";
 import { buildCsvString } from "./form.js";
 import { uuidv4, sendEmail } from "./email.js";
@@ -8,7 +8,7 @@ const filePath = "/assets/files/statement.txt";
 let statementText = "";
 const sessionId = uuidv4();
 const mainEmail = "condolences.zine@gmail.com";
-const token = "";
+const token = "445f38b4-4b07-4fee-b259-1f14d5d2ee24";
 
 function getStatement(sourceDict) {
   const xhr = new XMLHttpRequest();
@@ -33,11 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
     "Artist Statement": { 'title': 'Statement', 'source': "" },
     "Game": {'title': 'Flower Feast', 'source': '<iframe src="https://flowerfeast-tee.glitch.me/" frameborder=0></iframe>'},
     "Credits": {'title': 'Credits', 'source': ''},
+    // "New Iframe" : {'title': 'New Iframe', 'source': ''}, //Example of how to add a new iframe
   };
 
   const gifSources = [
     { 'title': 'TEST 1', 'source': "https://giphy.com/embed/R6gvnAxj2ISzJdbA63" },
-    { 'title': 'TEST 2', 'source': "https://giphy.com/embed/3o7aD2vH0w5rMnZ3Bu" }
+    { 'title': 'TEST 2', 'source': "https://giphy.com/embed/3o7aD2vH0w5rMnZ3Bu" },
   ]
 
   getStatement(iframeSources);
@@ -233,6 +234,10 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response == q5) {
         createSpecificModal("Stretches");
       }
+      
+      // if (response == q17) {
+      //   createSpecificModal("Credits");
+      // }
 
       if (response == "end") {
         botResponse = "Bye!";

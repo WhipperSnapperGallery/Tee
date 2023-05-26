@@ -13,7 +13,10 @@
 .cmodal-header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    border-radius: 10px 10px 0px 0px;
+    padding: 10px 10px 10px 30px;
+    line-height: 5vh;
+    font-size: large;
     cursor: move;
 }
 
@@ -49,14 +52,14 @@
     display: flex;
     justify-content: flex-end;
     flex-flow: row nowrap;
+    padding-right: 1rem;
 }
 
 .minimize-btn {
     background-color: transparent;
     border: none;
     color: white;
-    font-size: 18px;
-    line-height: 1;
+    font-size: 25px;
     cursor: pointer;
 }
 
@@ -204,6 +207,14 @@
     max-width: 80%;
     margin-left: 10px;
     animation: floatup .5s forwards
+}
+
+.chat-option {
+    background: transparent;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px black dotted;
 }
 
 @keyframes floatup {

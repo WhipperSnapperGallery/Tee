@@ -24,7 +24,7 @@ canvas {
 }
 
 .container-fluid {
-    background: url("../../assets/img/background.PNG") no-repeat center center !important;
+    background: url("../../assets/img/background.PNG") no-repeat top center !important;
     background-size: cover !important;
 }
 
@@ -36,7 +36,7 @@ canvas {
     position: absolute;
     top: 0;
     right: 10px;
-    margin: 1rem 0 1rem 0;
+    margin: 0 0 1rem 0;
 }
 
 .btn-holder-v {
@@ -75,7 +75,7 @@ canvas {
 } */
 
 .icon {
-    color: black !important;
+    color: #14034e !important;
     width: 5vw;
     height: 5vw;
     border-radius: 70rem !important;
@@ -85,19 +85,25 @@ canvas {
     border: none !important;
 }
 
-.icon.active {
-    color: white !important;
+.icon.active,
+.icon:hover {
+    color: #f7ab98 !important;
+    
 }
 
-.icon:hover {
-    color: white !important;
-}
 
 .icon-image {
     font-size: 3vw;
     width:60%;
     height: auto;
+    /* text-shadow: -1px -1px 0 #4b49f1, 1px -1px 0 #4b49f1, -1px 1px 0 #4b49f1, 1px 1px 0 #4b49f1; */
 }
+
+.icon-image:hover {
+    /* text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000; */
+    text-shadow: 0px 0px 2px #14034e;
+} 
+
 
 iframe {
     width: 100%;

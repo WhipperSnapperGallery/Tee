@@ -1,5 +1,4 @@
 import { QType, Question, Response } from "./questions";
-import { buildCsvString } from "./form";
 
 //Initialize all the questions
 const q1 = new Question("Gosh, everything feels so messed up lately. Like my back hurts, my shoulders too. And there's this tension in my throat", QType.NO_ANSWER, []);
@@ -13,7 +12,7 @@ const q6 = new Question("Haha, I feel so good. How does your body feel?", QType.
 const q7 = new Question("Oh OK, no worries then.", QType.NO_ANSWER, []);
 const q8 = new Question("Yo. Have you been thinking about the Internet lately?", QType.NO_ANSWER, []);
 const q9 = new Question("Like, do you remember your first time being online?", QType.MULTIPLE_CHOICE, []);
-const q10 = new Question("Oh, fair. What where you ito as a kid?", QType.TEXT_ANSWER, []);
+const q10 = new Question("Oh, fair. What where you in to as a kid?", QType.TEXT_ANSWER, []);
 const q11 = new Question("I remember being really into PBS games, like cyberchase. Then then I was into neopets for a bit. When I got a little older though, I started to venture into chatrooms. But now I feel so cringe about it lol.", QType.NO_ANSWER, []);
 const q12 = new Question ("The Internet's changed so much. Does it feel different for you too? What kind of things do you do online now?", QType.TEXT_ANSWER, []);
 const q13 = new Question("Intereting. Yeah, I get into the social medias a bunch, but lately I've been trying to surf the net like its 1999, u know?", QType.MULTIPLE_CHOICE, [])
@@ -21,6 +20,7 @@ const q14 = new Question("OK cool!", QType.NO_ANSWER, []);
 const q15 = new Question("That's cool.", QType.NO_ANSWER, []);
 const q16 = new Question("I have something for you!! Click on the magic wand!", QType.MULTIPLE_CHOICE, []);
 const q17 = new Question("Anywayy. Thanks for hanging out today!!", QType.NO_ANSWER, []);
+// const q18 = new Question("Enter the text of the question", QType.MULTIPLE_CHOICE, ["Make this empty"]);
 
 //Create the decision tree by setting the responses and next properties.
 q1.next = q2; //do this for NO_ANSWER or TEXT_ANSWER questions
@@ -46,7 +46,10 @@ q13.choices.push(new Response("Not really", q15));
 q14.next = q16;
 q15.next = q16;
 q16.choices.push(new Response(`<button id='chat-ball' class="border-0 bg-transparent"><i class="fa-solid fa-gift"></i></i></button>`, q17));
-q17.next = "end";
+q17.next = "end"; //the last question should have its next (or one of its responses' next) set to "end"
+// q18.choices.push(new Response("Yes", q19));
+// q18.choices.push(new Response("No", "end"), );
+// q19.next = "end";
 
 export const getBotResponse = (question=null, userResponse="") => {
     if (question === null) {

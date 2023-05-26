@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
             canvas.classList.remove('cnvs-eraser');
             canvas.classList.add('cnvs-pencil')
             ctx.strokeStyle = '#14034e';
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 15;
         }
     }
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
             canvas.classList.remove('cnvs-pencil');
             canvas.classList.add('cnvs-eraser');
             ctx.strokeStyle = 'white';              
-            ctx.lineWidth = 15;
+            ctx.lineWidth = 30;
         }
     });
 
